@@ -1,24 +1,24 @@
 import React, { Provider } from "react";
 import Button from "./components/Buttons";
-import { render } from "@testing-library/react";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 import defaultTheme from "./defaultTheme";
 
-import snapshotDiff from "snapshot-diff";
-import { exportAllDeclaration } from "@babel/types";
+import { createShallow } from "@material-ui/core/test-utils";
 
-const MyProvider = ({ children }) => {
-  return (
-    <ThemeProvider theme={createMuiTheme(defaultTheme)}>
-      {children}
-    </ThemeProvider>
-  );
-};
 describe("<Button />", () => {
-  it("should work", () => {
-    const wrapper = render(<Button>Hello World</Button>, {
-      wrapper: MyProvider
+  let shallow;
+  beforeAll(() => {
+    shallow = createShallow({
+      wrappingComponent: ({ children, theme }) => (
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      ),
+      wrappingComponentProps: {
+        theme: createMuiTheme(defaultTheme)
+      }
     });
+  });
+  it("should work", () => {
+    const wrapper = shallow(<Button>Hello World</Button>);
     expect(wrapper.container).toMatchSnapshot();
   });
 });
