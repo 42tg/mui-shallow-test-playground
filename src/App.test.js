@@ -17,7 +17,7 @@ describe("<Button />", () => {
       }
     });
   });
-  it("should work", () => {
+  it("Should render the button", () => {
     const wrapper = shallow(<Button>Hello World</Button>);
     expect(wrapper.container).toMatchSnapshot();
   });
